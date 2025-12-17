@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('warehouse_id')->nullable()->after('email')->constrained('warehouses')->onDelete('set null');
-            $table->boolean('active')->default(true)->after('password');
-            $table->timestamp('last_login_at')->nullable()->after('remember_token');
+            $table->foreignId('warehouse_id')->nullable()->constrained('warehouses')->onDelete('set null');
+            $table->boolean('active')->default(true);
+            $table->timestamp('last_login_at')->nullable();
             
             $table->index('warehouse_id');
             $table->index('active');

@@ -25,10 +25,13 @@ class ProductFactory extends Factory
         $name = fake()->randomElement($productTypes) . ' ' . fake()->word();
         $sku = 'PROD-' . strtoupper(fake()->unique()->bothify('####??'));
         
+        // Agregar número único al slug para evitar colisiones (100 productos)
+        $slug = \Str::slug($name) . '-' . fake()->unique()->numberBetween(1000, 9999);
+        
         return [
             'category_id' => \App\Models\Category::factory(),
             'name' => $name,
-            'slug' => \Str::slug($name),
+            'slug' => $slug,
             'sku' => $sku,
             'description' => fake()->sentence(),
             'base_price' => fake()->randomFloat(4, 5, 500),

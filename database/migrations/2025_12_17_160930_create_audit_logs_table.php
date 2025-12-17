@@ -18,11 +18,10 @@ return new class extends Migration
             $table->json('old_values')->nullable();
             $table->json('new_values')->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->ipAddress('ip_address')->nullable();
+            $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->timestamps();
             
-            $table->index(['auditable_type', 'auditable_id']);
             $table->index('user_id');
             $table->index('created_at');
         });
