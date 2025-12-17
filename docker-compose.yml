@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  # Servicio PHP/Laravel con PHP 8.2
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nexus_wms_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - nexus_network
+    depends_on:
+      - db
+      - redis
+
+  # Servicio Nginx
+  nginx:
+    image: nginx:alpine
+    container_name: nexus_wms_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - nexus_network
+    depends_on:
+      - app
+
+  # Servicio MySQL
+  db:
+    image: mysql:8.0
+    container_name: nexus_wms_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: nexus_wms
+      MYSQL_USER: nexus_user
+      MYSQL_PASSWORD: nexus_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - nexus_network
+
+  # Servicio Redis
+  redis:
+    image: redis:7-alpine
+    container_name: nexus_wms_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - nexus_network
+
+  # Laravel Horizon para gestión de colas (opcional, se puede habilitar luego)
+  # horizon:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: nexus_wms_horizon
+  #   restart: unless-stopped
+  #   working_dir: /var/www
+  #   volumes:
+  #     - ./:/var/www
+  #   command: php artisan horizon
+  #   networks:
+  #     - nexus_network
+  #   depends_on:
+  #     - db
+  #     - redis
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  nexus_network:
+    driver: bridge
