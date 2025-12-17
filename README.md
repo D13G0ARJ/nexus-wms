@@ -159,7 +159,7 @@ app/Actions/
 ### Paso 1: Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/nexus-wms.git
+git clone https://github.com/D13G0ARJ/nexus-wms.git
 cd nexus-wms
 ```
 
@@ -331,9 +331,9 @@ nexus-wms/
 
 **Armando** - Desarrollador Full Stack
 
-- Portafolio: [Tu sitio web]
-- LinkedIn: [Tu perfil]
-- GitHub: [@tu-usuario](https://github.com/tu-usuario)
+- Portafolio: [En construcción]
+- LinkedIn: [linkedin.com/in/d13g0arj](https://www.linkedin.com/in/d13g0arj)
+- GitHub: [@D13G0ARJ](https://github.com/D13G0ARJ)
 
 ---
 
